@@ -52,7 +52,6 @@ def metparse(metadict,orgs,genelist):
 	outhandle=open('/Users/josec/Desktop/aln_ordered.fasta','w')
 	for gene in genelist:
 		for org in orgs:
-			outhandle.write('\n')
 			exon_list=[]
 			hit_list=[]
 			for hit in metadict[gene]:
@@ -61,12 +60,13 @@ def metparse(metadict,orgs,genelist):
 					hit_list.append(hit)
 			exon_list.sort()
 			if len(exon_list)>0:
-				to_write=[">%s_%s\n"%(hit['gene'],org)]
+				to_write=[">%s_%s\n"%(org,hit['gene'])]
 				for exon in exon_list:
 					for hit in hit_list:
 						if hit['exon']==exon:
 							to_write.append(hit['seq'])
 			outhandle.write(''.join(to_write))
+			outhandle.write('\n')
 	outhandle.close()
 	return
 
