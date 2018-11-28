@@ -8,7 +8,7 @@ Input:
 ACTGSEQ
 
 Output:
->org-org
+>org_gene
 ACTGSEQ (concatenated in correct exon order)
 """
 
@@ -39,6 +39,7 @@ def metadicter(fastdict):
 		ks=key.split("-")
 		gene=ks[0]
 		rdkeys=['seq','exon','org','gene']
+		print gene
 		rdvals=[fastdict[key].strip('\n'),float(ks[1]),ks[2],gene]
 		if gene not in genelist:
 			genelist.append(gene)
@@ -49,7 +50,7 @@ def metadicter(fastdict):
 
 
 def metparse(metadict,orgs,genelist):
-	outhandle=open('/Users/josec/Desktop/aln_ordered.fasta','w')
+	outhandle=open('/Users/josec/Desktop/New_Ref_gen/SpurCDS_Trim2Targets_concat.fa','w')
 	for gene in genelist:
 		for org in orgs:
 			exon_list=[]
@@ -60,7 +61,7 @@ def metparse(metadict,orgs,genelist):
 					hit_list.append(hit)
 			exon_list.sort()
 			if len(exon_list)>0:
-				to_write=[">%s_%s\n"%(org,hit['gene'])]
+				to_write=[">%s-%s\n"%(org,hit['gene'])]
 				for exon in exon_list:
 					for hit in hit_list:
 						if hit['exon']==exon:
@@ -68,13 +69,25 @@ def metparse(metadict,orgs,genelist):
 			outhandle.write(''.join(to_write))
 			outhandle.write('\n')
 	outhandle.close()
+	#comment out the rest if you dont want a seqlength count
+	# outhandle=open('/Users/josec/Desktop/cons_ordered.fasta','rU')
+	# outlines=[x.strip('\n') for x in outhandle.readlines()]
+	# name=''
+	# seq_length=''
+	# for out in outlines:
+	# 	if '>' in out:
+	# 		name=out
+	# 	else:
+	# 		seq_length=len(out)
+	# 		print name+'\t'+str(seq_length)
 	return
 
 
 
 def main():
-	orgs=['Met','Crino','Cya','Oligo']
-	input="/Users/josec/Desktop/aln.fasta"
+	#orgs=['Met','Crino','Cya','Oligo']
+	orgs=['Spur']
+	input="/Users/josec/Desktop/New_Ref_gen/NewRef1.fasta"
 	fastdict=fastadicter(input)
 	metadict,genelist=metadicter(fastdict)
 	metparse(metadict,orgs,genelist)
