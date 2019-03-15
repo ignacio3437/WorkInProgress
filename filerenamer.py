@@ -2,14 +2,15 @@ import os
 import shutil
 old_list=[]
 new_list=[]
-wd="/Users/josec/Desktop/renaming/PilbaraNCB240C_F"
-codex_file="/Users/josec/Desktop/renaming/CF.txt"
-newd="/Users/josec/Desktop/renaming/PilbaraNCB240C_F_renamed"
+wd="/Users/josec/Desktop/exoncap/Zoila/TeasdaleFish/alns"
+codex_file="/Users/josec/Desktop/exoncap/Zoila/TeasdaleFish/codex.txt"
+newd="/Users/josec/Desktop/exoncap/Zoila/TeasdaleFish/alns_re"
 
 codex_dictionary={}
 with open(codex_file, "Ur") as codex:
     for line in codex:
         linelist=line.split(",")
+        print(linelist)
         codex_dictionary[linelist[0]]=linelist[1].strip("\n")
 
 try:
