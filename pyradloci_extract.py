@@ -4,8 +4,8 @@ from Bio.SeqRecord import SeqRecord
 from Bio.Seq import Seq
 
 
-inpath='/Users/josec/Desktop/Datasets/skrad/skrad2/ipyrad/skad4_outfiles/skad4.loci'
-outpath='/Users/josec/Desktop/Datasets/skrad/skrad2/ipyrad/skad4_outfiles/loci_aln/'
+inpath='/Users/josec/Desktop/Datasets/skrad/skrad2/ipyrad/skad6_outfiles/skad6.loci'
+outpath='/Users/josec/Desktop/Datasets/skrad/skrad2/ipyrad/skad6_outfiles/loci_aln/'
 op=Path(outpath)
 op.mkdir(exist_ok=True)
 instring=Path(inpath).read_text()
