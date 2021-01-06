@@ -35,7 +35,10 @@ def codexdicter(codex_file):
     return codexdict
 
 def driver(indir,codex_file):
-    pwd=indir+"/"
+    if indir.endswith("/"):
+        pwd=indir
+    else:
+        pwd=indir+"/"
     codexdict = codexdicter(codex_file)
     #outdir = indir+"_renamed"
     for k in codexdict.keys():
