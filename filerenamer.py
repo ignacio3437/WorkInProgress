@@ -1,42 +1,63 @@
+#!/usr/bin/python3
 import os
-import shutil
-old_list=[]
-new_list=[]
-wd="/Users/josec/Desktop/CleanBam/reads"
-codex_file="/Users/josec/Desktop/codex.txt"
-newd="/Users/josec/Desktop/CleanBam/reads_re"
+import sys
+# import re
+# import shutil
 
-codex_dictionary={}
-with open(codex_file, "Ur") as codex:
-    for line in codex:
-        linelist=line.split(",")
-        codex_dictionary[linelist[0]]=linelist[1].strip("\n")
+# from pathlib import Path
 
-try:
-    os.mkdir(newd)
-except:
-    pass
-for f in os.listdir(wd):
-    ofilename= f.split("_")[0]
-    ofilepath= os.path.join(wd,f)
-    print(ofilepath)
-    print(ofilename)
-    if ofilename in codex_dictionary:
-        nfilename= codex_dictionary[ofilename]
-        handlepath=ofilepath.replace(ofilename,nfilename)
-        nfilepath=os.path.join(newd,os.path.basename(handlepath))
-        shutil.copy(ofilepath,nfilepath)
-        
-        if handlepath.endswith("fa") or handlepath.endswith("seq"):
-            rename_content=True
-        else:
-            rename_content=False
-        if rename_content:
-            with open(ofilepath,"Ur") as efile:
-                old_file_string=efile.read()
-                new_file_string=old_file_string.replace(ofilename,nfilename)
-            with open(nfilepath,"w") as fileout:
-                fileout.write(new_file_string)
-        else:
-            pass
 
+
+'''
+
+'''
+
+usage = """python filerenamer.py --dir directory_with_files_to_rename --codex csv_of_how_to_rename.txt
+
+
+Renames every file specified in --dir that contains the key specified in --codex. 
+
+Example of Codex file:
+old,new
+
+Would change Picture_of_old_house.jpg to Picture_of_new_house.jpg 
+"""
+
+
+def codexdicter(codex_file):
+    with open(codex_file,'r') as codex_handle:
+        codex=codex_handle.read()
+    clist=codex.split('\n')
+    codexdict={}
+    for c in clist:
+        pair=c.split(',')
+        codexdict[pair[0]]=pair[1]
+    return codexdict
+
+def driver(indir,codex_file):
+    pwd=indir+"/"
+    codexdict = codexdicter(codex_file)
+    #outdir = indir+"_renamed"
+    for k in codexdict.keys():
+        for filename in os.listdir(indir): 
+            if k in filename:
+                new_filename = filename.replace(k,codexdict[k])
+                os.rename(pwd+filename, pwd+new_filename)
+    print("done")
+    return 
+
+def main():
+    args = sys.argv[1:]
+    # args = ["--dir", "/home/iggy/BioinformatIg/Coral/Trimmed", "--codex", "/home/iggy/BioinformatIg/Coral/Sample_Codex.txt" ] # For Testing
+    if not args:
+            print(usage)
+            sys.exit(1)
+    if args[0] == '--dir' and args[2] == '--codex':
+        driver(indir=args[1],codex_file=args[3])
+    else:
+        print(usage)    
+        sys.exit(1)
+    return
+
+if __name__ == "__main__":
+    main()
